@@ -5,20 +5,24 @@ const fileManager = new FileManager('products.json')
 const router = Router();
 // const products = [];
 
-router.get('/products', async (req, res) => {
+router.get('/', async (req, res) => {
     const products = await fileManager.get()
     let limit = req.query.limit
-    if (!limit) res.send({products})
+    if (!limit) res.render('home', {products});
     else {
         const prodLimit = [];
         if(limit > products.length) limit = products.length;
         for(let index = 0; index < limit; i++) {
             prodLimit.push(products[index]);
         }
-    res.send({prodLimit});
+    res.render('home', {products});
     }
     req.io.emit('updatedProducts', products);
 })
+
+router.get('/add-product', async (req, res) => {
+    res.render('new-product');
+});
 
 router.get('/products/:pid', async (req, res) => {
     const id = req.params.pid;
@@ -28,6 +32,7 @@ router.get('/products/:pid', async (req, res) => {
 
 router.post('/', async (req, res) => {
     const {title, description, price, thumbnails, code, stock, category, status} = req.body
+    console.log({...req.body});
     const addProduct = await fileManager.add(title, description, price, thumbnails, code, stock, category, status);
     req.io.emit('updatedProducts', await fileManager.get());
     res.send(addProduct);
