@@ -1,33 +1,38 @@
-const addForm = document.getElementById('addForm');
+const addForm = document.getElementById('form-add-product');
 
-addForm.addEventListener('submit', async (e) => {
-    e.preventDefault()
+addForm.addEventListener('submit', (e) => {
+    e.preventDefault();
     const title = document.getElementById('title').value;
     const description = document.getElementById('description').value;
     const price = document.getElementById('price').value;
-    const thumbnail = document.getElementById('thumbnail').value;
+    const thumbnails = document.getElementById('thumbnails').value;
     const stock = document.getElementById('stock').value;
     const category = document.getElementById('category').value;
-
-    const response = await fetch('http://127.0.0.1:8080/api/products', {
-        method: "POST",
+    
+    fetch('http://localhost:8080/api/products/', {
+        method: 'POST',
         headers: {
-            'Accept': 'application/json',
             'Content-Type': 'application/json'
-        },
+          },
         body: JSON.stringify({
             title,
             description,
             price: +price,
-            thumbnail,
-            stock: +stock,
-            category
+            thumbnails,
+            code: Date.now(),
+            stock,
+            category,
+            status: 'disponible'
         })
+    })
+    .then(result => {
+        return result.json();
+    })
+    .then(data => {
+        console.log(data);
+    })
+    .catch(err =>{
+        console.log(err);
+        alert("Hubo un error, no se pudo agregar el producto");
     });
-    const data = await response.json();
-    if(response.status == 200){
-        alert('Se ha agregado el producto correctamente.')
-    } else {
-        alert('Error, no se pudo cargar el producto')
-    }
-})
+});
