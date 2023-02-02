@@ -1,0 +1,25 @@
+<table>
+    <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">Title</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Price</th>
+            <th scope="col">Stock</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    {{#each docs}}
+    <tbody>
+        <tr>
+            <th scope="row"></th>
+            <td><a href="/api/products/{{__id}}">{{title}}</a></td>
+            <td>{{category}}</td>
+            <td>{{price}}</td>
+            <td>{{stock}}</td>
+        </tr>
+    </tbody>
+    {{/each}}
+</table>
+
+<script src="/js/product.js"></script>
