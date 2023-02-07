@@ -1,4 +1,4 @@
-const addForm = document.getElementById('form-add-product');
+const addForm = document.getElementById('addForm');
 
 addForm.addEventListener('submit', (e) => {
     e.preventDefault();

@@ -5,9 +5,9 @@ let chatBox = document.getElementById("chatbox")
 Swal.fire({
     title: 'Authentication',
     input: 'text',
-    text: 'Set username for the chat',
+    text: 'Elija el nombre para usar en el chat:',
     inputValidator: value => {
-        return !value.trim() && 'Please. Write a username!'
+        return !value.trim() && 'Por favor, escriba un nombre!'
     },
     allowOutsideClick: false
 }).then( result => {
@@ -16,6 +16,7 @@ Swal.fire({
     socket = io()
 })
 
+//Enviar mensajes
 chatBox.addEventListener("keyup", event => {
     if(event.key == "Enter"){
         if(chatBox.value.trim().length > 0){

@@ -1,11 +1,14 @@
 import express from 'express';
 import handlebars from 'express-handlebars';
 import { Server } from 'socket.io';
-import __dirname from './utils.js';
 import mongoose from 'mongoose';
-import run from './run.js';
 import MongoStore from 'connect-mongo';
+import passport from 'passport'
+import initPassport from './config/passport.config.js'
 import session from 'express-session';
+
+import __dirname from './utils.js';
+import run from './run.js';
 
 const app = express();
 
@@ -29,6 +32,11 @@ app.use(session({
     saveUninitialized: true
 }));
 
+initPassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 mongoose.connect(URI, {dbName: MongoDb}, (error) => {
     if(error){
         console.log('Error to connect with DB...');
@@ -36,6 +44,6 @@ mongoose.connect(URI, {dbName: MongoDb}, (error) => {
     }
     const httpServer = app.listen(8080, () => console.log('Listening..'))
     const socketServer = new Server(httpServer);
-    httpServer.on('error', () => console.log('ERROR'))
+    httpServer.on('error', (e) => console.log('ERROR' + e))
     run(socketServer, app)
 });
