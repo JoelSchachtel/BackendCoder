@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/realtimeproducts', async (req, res) => {
+router.get('/view', async (req, res) => {
     const products = await productModel.find().lean().exec();
     res.render('realTimeProducts', {
         data: products

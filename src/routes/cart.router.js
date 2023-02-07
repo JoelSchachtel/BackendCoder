@@ -9,10 +9,9 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", async (req, res) => {
-  const id = req.params.id;
-  const cart = await cartModel.find({ _id: id }).lean();
-  const productsInCart = cart[0].products;
-  res.render("cart", { productsInCart });
+  const id = req.params.id
+  const cart = await cartModel.findOne({_id: id})
+  res.json({cart})
 });
 
 router.post("/", async (req, res) => {
@@ -49,15 +48,11 @@ router.delete("/:cid/product/:pid", async (req, res) => {
   const productID = req.params.pid;
 
   const cart = await cartModel.findById(cartID);
-  if (!cart)
-    return res.status(404).json({ status: "error", error: "Cart Not Found" });
+  if (!cart) return res.status(404).json({ status: "error", error: "Cart Not Found" });
 
-  const productIDX = cart.products.findIndex((p) => p.id == productID);
+  const productIDX = cart.products.findIndex(p => p.id == productID);
 
-  if (productIDX < 0)
-    return res
-      .status(404)
-      .json({ status: "error", error: "Product Not Found on Cart" });
+  if (productIDX <= 0) return res.status(404).json({ status: "error", error: "Product Not Found on Cart" });
 
   cart.products.splice(productIDX, 1);
   await cart.save();
