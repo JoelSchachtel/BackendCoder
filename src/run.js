@@ -4,6 +4,7 @@ import chatRouter from "./routes/chat.router.js";
 import messagesModel from "./dao/models/messages.model.js";
 import productViewsRouter from "./routes/products.views.router.js";
 import sessionRouter from "./routes/session.router.js";
+import {passportCall} from './utils.js'
 
 const run = (socketServer, app) => {
   app.use((req, res, next) => {
